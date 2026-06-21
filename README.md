@@ -45,7 +45,26 @@ By contrasting a reference map against our filtered spatial layout, you can see 
 * **Purple Zone (Valid Tracts):** Stable, high-density residential tracts matching the core living areas seen on the map (Flatbush, Bedford-Stuyvesant, Borough Park).
 * **Dark Dark Blue/Black Zone (Masked Outliers):** Automatically isolates Jamaica Bay (bottom right), Prospect Park (center blank spot), and the industrial shipping ports along the western coastline.
 
-* **Mitigating Skewness:** Highly skewed datasets (such as unemployment rates and digital disconnect indicators) are normalized using log transformations ($\log(1+x)$) or square-root scaling to stabilize variance.
+## 📈 Mitigating Skewness: Log-Transformation Pipeline
+
+Right-skewed socioeconomic metrics (such as poverty percentages or vehicle ownership spikes) can severely compromise the performance of Principal Component Analysis (PCA). Left untransformed, the long statistical tail disproportionately pulls the principal components, leading to a biased index.
+
+To stabilize variance and bring the data closer to a normal distribution, we implement a **natural log transformation**:
+
+$$\text{Poverty Percentage}_{\text{trans}} = \ln(\text{Poverty Percentage} + 1)$$
+
+### Visual Proof: Distribution Normalization
+
+The side-by-side comparison below captures how the long right tail of the raw poverty distribution is compressed into a balanced, symmetrical bell curve, setting up mathematically clean inputs for subsequent standardized $Z$-scoring.
+
+<p align="center">
+  <img src="images/maps/tranformation.png" width="95%" alt="Poverty Data Log Transformation Pipeline" />
+</p>
+
+* **Left Panel (Raw Feature Skew):** Notice the steep concentration at lower percentages with a dramatic right-side tail that stretches out unreliably.
+* **Right Panel (Stabilized Gaussian Curve):** After log transformation, the distribution aligns into an ideal bell curve shape, reducing noise and optimizing variance for dimensionality reduction.
+
+
 * **Standardization:** All transformed dimensions are converted into uniform Z-scores using a `StandardScaler` to align disparate units onto a standard normalized scale centered around 0.
 
 ---

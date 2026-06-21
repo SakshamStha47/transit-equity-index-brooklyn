@@ -36,7 +36,7 @@ To minimize multi-collinearity among socioeconomic variables, **Principal Compon
 ### Transit Equity Priority Index Formula
 The final actionable priority index is calculated by scoring each census tract against the variance-explained weights of the three principal components:
 
-$$\text{Transit Equity Score} = (0.477 \times \text{PC1}) + (0.331 \times \text{PC2}) + (0.192 \times \text{PC3})$$
+$$\text{Transit Equity Score} = 0.477 \text{PC1} + 0.331 \text{PC2} + 0.192 \text{PC3}$$
 
 Higher scores explicitly isolate high-priority census tracts requiring public transit investment and infrastructure deployment.
 

@@ -20,6 +20,31 @@ Evaluating transit accessibility requires moving beyond raw averages to capture 
 ### 📈 Data Transformation Pipeline
 To ensure robust statistical integrity and prevent extreme local outliers from distorting regional indexing, the pipeline implements rigorous spatial and data wrangling constraints:
 * **Filtering Outliers:** Non-residential tracts and outliers are dynamically isolated by removing any census tracts with fewer than 100 households or total population.
+
+## 🧹 Geographic Data Filtering & Noise Reduction
+
+Raw US Census datasets include geographic tracts that do not represent typical residential behavior (e.g., public parks, industrial maritime zones, and open water boundaries). If left unfiltered, these low-population zones create extreme mathematical outliers (division-by-zero errors or artificially inflated 100% percentages) that heavily skew the index.
+
+To protect the integrity of the statistical pipeline, a strict filter is applied: **any census tract with fewer than 100 total households is isolated and masked out.**
+
+| Raw Geographic Feature | Why It Is Masked Out | Impact on Transit Modeling |
+| :--- | :--- | :--- |
+| **Prospect Park / Green-Wood Cemetery** | High land area, near-zero resident households. | Eliminates zero-denominator inflation spikes. |
+| **Jamaica Bay / Gateway National Area** | Open water boundaries and protected wetlands. | Prevents empty geographic polygons from skewing regional averages. |
+| **Brooklyn Navy Yard / Industrial Edges** | High economic activity but minimal permanent residency. | Ensures index purely reflects consumer transit-dependency. |
+
+### Visual Proof: Study Area Stabilization
+
+By contrasting a reference map against our filtered spatial layout, you can see how the 100-household threshold perfectly identifies and black-boxes non-residential noise without losing critical community data:
+
+<p align="center">
+  <img src="images/maps/reference_google_map.jpg" width="45%" alt="Brooklyn Reference Map" />
+  <img src="images/maps/initial_data_cleanup.jpg" width="45%" alt="Filtered Census Tracts" />
+</p>
+
+* **Purple Zone (Valid Tracts):** Stable, high-density residential tracts matching the core living areas seen on the map (Flatbush, Bedford-Stuyvesant, Borough Park).
+* **Dark Dark Blue/Black Zone (Masked Outliers):** Automatically isolates Jamaica Bay (bottom right), Prospect Park (center blank spot), and the industrial shipping ports along the western coastline.
+
 * **Mitigating Skewness:** Highly skewed datasets (such as unemployment rates and digital disconnect indicators) are normalized using log transformations ($\log(1+x)$) or square-root scaling to stabilize variance.
 * **Standardization:** All transformed dimensions are converted into uniform Z-scores using a `StandardScaler` to align disparate units onto a standard normalized scale centered around 0.
 

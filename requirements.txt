@@ -1,0 +1,8 @@
+pygris
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+contextily
+geopandas

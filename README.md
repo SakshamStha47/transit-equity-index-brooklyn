@@ -38,8 +38,8 @@ To protect the integrity of the statistical pipeline, a strict filter is applied
 By contrasting a reference map against our filtered spatial layout, you can see how the 100-household threshold perfectly identifies and black-boxes non-residential noise without losing critical community data:
 
 <p align="center">
-  <img src="images/maps/reference_google_map.jpg" width="45%" alt="Brooklyn Reference Map" />
-  <img src="images/maps/initial_data_cleanup.jpg" width="45%" alt="Filtered Census Tracts" />
+  <img src="images/maps/reference_google_map.png" width="45%" alt="Brooklyn Reference Map" />
+  <img src="images/maps/initial_data_cleanup.png" width="45%" alt="Filtered Census Tracts" />
 </p>
 
 * **Purple Zone (Valid Tracts):** Stable, high-density residential tracts matching the core living areas seen on the map (Flatbush, Bedford-Stuyvesant, Borough Park).

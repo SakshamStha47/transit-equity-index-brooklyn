@@ -65,7 +65,27 @@ The side-by-side comparison below captures how the long right tail of the raw po
 * **Right Panel (Stabilized Gaussian Curve):** After log transformation, the distribution aligns into an ideal bell curve shape, reducing noise and optimizing variance for dimensionality reduction.
 
 
-* **Standardization:** All transformed dimensions are converted into uniform Z-scores using a `StandardScaler` to align disparate units onto a standard normalized scale centered around 0.
+## ⚖️ Feature Standardization: Equalizing Multi-Variable Scales
+
+Principal Component Analysis (PCA) is highly sensitive to the raw variances of input variables. In our raw census dataset, different socioeconomic indicators have completely different baseline scales (e.g., one feature might scale between 0 and 5, while another ranges from 0 to 100). If unstandardized, variables with larger raw magnitudes dominate the principal components, rendering the final equity index invalid.
+
+To eliminate this scale bias, we implement **Z-score Standardization** across all selected variables using `StandardScaler`:
+
+$$Z = \frac{x - \mu}{\sigma}$$
+
+Where $\mu$ represents the feature mean and $\sigma$ represents the standard deviation. This shifts every socioeconomic factor to share a common center ($0$) and a uniform variance scale ($1$).
+
+### Visual Proof: Multi-Variable Standardization
+
+The box plots below demonstrate the structural alignment of our feature space before and after applying the Z-score transformation:
+
+<p align="center">
+  <img src="images/maps/before_normalization.png" width="49%" alt="Distribution Before Normalization" />
+  <img src="images/maps/after_normalization.png" width="49%" alt="Distribution After Normalization" />
+</p>
+
+* **Before Normalization (Left):** The variables are highly mismatched. For instance, the median and range for **Poverty** and **Over 65** are vastly higher than **Unemployment** or **No Internet**, meaning a raw mathematical model would unintentionally over-weight poverty and age.
+* **After Normalization (Right):** Every single socioeconomic indicator is perfectly leveled. Their medians align tightly around **0**, and their interquartile ranges (IQRs) share a uniform scale spanning primarily between **-2 and +2**. This ensures each equity driver has an equal voice during dimensionality reduction.
 
 ---
 

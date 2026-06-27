@@ -128,11 +128,13 @@ Component scores were mapped back to census tracts to examine the geographic dis
 ### Transit Equity Priority Index (TEPI)
 
 The final index is computed as a weighted combination of the four retained principal components:
-
-TEPI = (0.3629 × PC1)
+<p align="center">
+  TEPI = (0.3629 × PC1)
      + (0.2535 × PC2)
      + (0.1449 × PC3)
      + (0.1237 × PC4)
+</p>
+
 
 This weighting scheme provides a statistically grounded baseline by emphasizing components that explain a larger share of overall variation. Alternative weighting approaches could be explored in future work.
 

@@ -53,6 +53,7 @@ Several variables exhibited right-skewed distributions. Logarithmic and square-r
 All variables were standardized using z-score normalization to ensure that differences in measurement scale did not disproportionately influence the PCA results.
 
 <p align="center">
+  <img src="images/maps/before_normalization.png" width="85%" alt="Distribution After Normalization" />
   <img src="images/maps/after_normalization.png" width="85%" alt="Distribution After Normalization" />
   <br>
   <em>Figure 3: Variable distributions following transformation and standardization.</em>

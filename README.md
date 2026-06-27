@@ -57,7 +57,7 @@ Finally, the transformed variables were adjusted through Standard Scaling, shift
 The model isolates three primary socioeconomic and demographic signatures across the borough. Mapping these components reveals that vulnerability is not uniform; different neighborhoods face distinct types of structural isolation.
 
 <p align="center">
-  <img src="images/maps/before_normalization.png" width="100%" alt="Principal Components Mapping - Kings County"/>
+  <img src="images/maps/pc_plots.png" width="100%" alt="Principal Components Mapping - Kings County"/>
   <br>
   <em>Figure 1: Spatial distribution of Systemic Economic Need (PC1), Physical Mobility Need (PC2), and the Structural Employment Gap (PC3) across Kings County census tracts.</em>
 </p>
@@ -66,7 +66,7 @@ The model isolates three primary socioeconomic and demographic signatures across
 By combining the meaningful variance of these individual socioeconomic signatures, the model produces a final composite **Transit Equity Priority Index**. This acts as a localized blueprint for resource allocation, separating communities with deep structural barriers from high-resource zones.
 
 <p align="center">
-  <img src="images/maps/before_normalization.png" width="75%" alt="Transit Equity Priority Index by Census Tract"/>
+  <img src="images/maps/transit_equity_index.png" width="75%" alt="Transit Equity Priority Index by Census Tract"/>
   <br>
   <em>Figure 2: Final integrated Transit Equity Priority Index by Census Tract in Kings County, highlighting high-priority investment zones.</em>
 </p>
@@ -113,7 +113,7 @@ To establish a mathematically rigorous investment baseline, the final **Transit 
 $$\text{Transit Equity Score} = 0.3629(\text{PC}_1) + 0.2535(\text{PC}_2) + 0.1449(\text{PC}_3) + 0.1237(\text{PC}_4)$$
 
 <p align="center">
-  <img src="images/maps/before_normalization.png" width="60%" alt="Scree Plot: Explained Variance by Component"/>
+  <img src="images/maps/screeplot.png" width="60%" alt="Scree Plot: Explained Variance by Component"/>
   <br>
   <em>Figure 3: Scree plot outlining the mathematical elbow drop-off after PC4, validating the inclusion of 88.5% of overall tract variance.</em>
 </p>

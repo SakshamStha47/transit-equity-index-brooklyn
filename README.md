@@ -165,3 +165,38 @@ The map is intended as an exploratory planning tool rather than a prescriptive d
 * Principal Component Analysis (PCA)
 
 ---
+## 🔎 Spatial Patterns & Planning Implications
+
+The Transit Equity Priority Index reveals several notable spatial patterns across Kings County.
+
+First, elevated TEPI scores are not randomly distributed throughout the borough. Instead, high-priority census tracts appear in geographically concentrated clusters, suggesting that socioeconomic vulnerability exhibits meaningful spatial structure. This clustering indicates that transportation disadvantage may be experienced collectively at the neighborhood level rather than solely at the individual household level.
+
+Second, several concentrations of high-priority tracts emerge in southern and eastern portions of the borough. These areas exhibit overlapping combinations of poverty, unemployment, disability, limited digital connectivity, and transportation dependence. The co-occurrence of multiple vulnerability indicators suggests that residents in these communities may be particularly sensitive to transportation barriers and accessibility constraints.
+
+In contrast, lower-priority tracts are concentrated in several northwestern sections of the borough, indicating substantial intra-urban variation in vulnerability across Kings County. This highlights the importance of geographically targeted planning approaches rather than uniform borough-wide interventions.
+
+The presence of several isolated high-scoring tracts surrounded by lower-scoring neighbors may also warrant additional investigation. Such patterns could reflect localized concentrations of disadvantage, unique land-use characteristics, public housing developments, or tract-level demographic anomalies that are not immediately visible from aggregate statistics alone.
+
+Overall, the spatial distribution suggests that transportation equity challenges are not evenly distributed throughout Kings County and may require a combination of localized and network-wide planning responses.
+
+---
+
+## ⚠️ Interpretation & Limitations
+
+It is important to recognize that the Transit Equity Priority Index measures **social vulnerability**, not transportation accessibility itself.
+
+The index is constructed from socioeconomic and demographic indicators including poverty, unemployment, disability status, age, internet access, and vehicle ownership. While these variables are frequently associated with transportation disadvantage, they do not directly measure transportation service quality.
+
+As a result, a census tract may receive a high TEPI score because it contains populations that are particularly vulnerable to mobility barriers, even if transit service in that area is relatively strong. Conversely, areas with limited transit service may receive lower scores if residents experience fewer socioeconomic disadvantages.
+
+Therefore, the index should be interpreted as identifying communities that may be more sensitive to transportation barriers rather than definitively identifying underserved transit areas.
+
+Future work could strengthen the analysis by incorporating transportation-specific datasets such as:
+
+* GTFS transit service data
+* Travel-time accessibility measures
+* Transit frequency and reliability metrics
+* Walkability and first/last-mile connectivity indicators
+* Employment accessibility analyses
+
+Integrating these datasets would allow future versions of the index to evaluate whether socially vulnerable populations also experience disproportionate transportation accessibility challenges.

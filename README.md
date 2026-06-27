@@ -1,128 +1,196 @@
-# Transit Equity Priority Index (TEPI): A Data-Driven Approach to Spatial Vulnerability in Kings County
+# Transit Equity Priority Index (TEPI): Identifying Spatial Vulnerability Patterns in Kings County Using Principal Component Analysis
 
-A spatial optimization project that compresses multi-dimensional socioeconomic, physical, and digital barriers into a single, actionable index to guide equitable transit investments across Kings County (Brooklyn), NY.
+A spatial analytics project that integrates socioeconomic, demographic, and digital-access indicators into a composite vulnerability index for census tracts in Kings County (Brooklyn), New York. The objective is to explore how multiple dimensions of disadvantage co-occur spatially and to provide a data-driven framework that may support equity-focused transportation planning.
+
+---
+
+## 📌 Project Overview
+
+Transportation accessibility is shaped by more than infrastructure alone. Economic hardship, age, disability status, vehicle availability, and digital connectivity can collectively influence an individual's ability to access employment, healthcare, education, and essential services.
+
+This project develops a **Transit Equity Priority Index (TEPI)** by combining six census-derived indicators of potential transportation disadvantage. Rather than assigning subjective weights to these variables, the analysis applies **Principal Component Analysis (PCA)** to identify latent patterns within the data and reduce dimensionality while retaining most of the underlying variance.
+
+The resulting index highlights census tracts where multiple vulnerability factors are concentrated and may warrant further investigation for transportation equity interventions.
 
 ---
 
-## 📌 Project Executive Summary
-Traditional transportation planning often optimizes for ridership volume or infrastructural convenience, unintentionally marginalizing communities facing compounding socio-spatial barriers. This project shifts the paradigm from simple cost-efficiency to **equity-driven intervention**. 
-
-By evaluating six distinct census-level vulnerabilities—poverty, unemployment, zero car ownership, disability, advanced age, and digital exclusion—this model captures the invisible networks of physical and digital isolation. Rather than relying on arbitrary human weights, the project uses Principal Component Analysis (PCA) to isolate orthogonal socio-spatial signatures, mapping them directly onto Kings County tracts to identify where public transit interventions are most critically required for community survival.
-
----
 ## 📊 Data Source & Preprocessing Pipeline
 
-This index relies on baseline **American Community Survey (ACS) census tract data** across Kings County, NY This pipeline extracts, cleans, and integrates data across six distinct demographic metrics at the census tract level:
+The analysis uses census-tract-level data obtained from the **American Community Survey (ACS)** for Kings County, NY.
+
+The following indicators were extracted and aggregated:
 
 1. **Zero-Vehicle Ownership** (ACS Table B25044)
 2. **Poverty Status** (ACS Table B17017)
 3. **Unemployment Rate** (ACS Table B23025)
-4. **Age Vulnerability** (Population Over 65; ACS Table B01001)
-5. **Physical Mobility Constraints** (Population with a Disability; ACS Table B18101)
-6. **Digital Infrastructure Disconnect** (No Internet Access; ACS Table B28011)
+4. **Population Over Age 65** (ACS Table B01001)
+5. **Population with a Disability** (ACS Table B18101)
+6. **Households Without Internet Access** (ACS Table B28011)
 
-### 1. Spatial Outlier Masking
-Tracts with an extremely low sample size (**fewer than 100 households**) were filtered out to remove industrial zones, parks, or unpopulated transit hubs that could break statistical distributions.
+### Spatial Outlier Masking
+
+Census tracts containing fewer than 100 households were excluded from analysis to reduce the influence of industrial areas, parks, transportation facilities, and other sparsely populated zones that may distort statistical distributions.
 
 <p align="center">
-  <img src="images/maps/reference_google_map.png" width="45%" alt="Brooklyn Reference Map" />
-  <img src="images/maps/initial_data_cleanup.png" width="45%" alt="Filtered Census Tracts" />
+  <img src="images/maps/reference_google_map.png" width="48%" alt="Brooklyn Reference Map" />
+  <img src="images/maps/initial_data_cleanup.png" width="48%" alt="Filtered Census Tracts" />
   <br>
-  <em>Figure: Masking process separating valid study tracts from unpopulated outliers.</em>
+  <em>Figure 1: Census tract filtering process used to remove sparsely populated outliers.</em>
 </p>
 
-### 2. Skewness Transformation
-Right-skewed socioeconomic proportions were corrected using logarithmic or square-root transformations to handle outliers and conform closely to a normal Gaussian curve.
+### Distribution Transformation
+
+Several variables exhibited right-skewed distributions. Logarithmic and square-root transformations were applied where appropriate to reduce skewness and improve compatibility with PCA assumptions.
 
 <p align="center">
   <img src="images/maps/tranformation.png" width="95%" alt="Poverty Data Log Transformation Pipeline" />
   <br>
-  <em>Figure: Shift in poverty feature distribution following log transformation.</em>
+  <em>Figure 2: Example of distribution adjustment using logarithmic transformation.</em>
 </p>
 
-### 3. Standard Z-Score Scaling
-Finally, the transformed variables were adjusted through Standard Scaling, shifting distributions to a uniform mean of 0 and standard deviation of 1. This ensures that features of differing magnitudes share equal baseline weight prior to variance evaluation.
+### Standardization
+
+All variables were standardized using z-score normalization to ensure that differences in measurement scale did not disproportionately influence the PCA results.
 
 <p align="center">
-  <img src="images/maps/before_normalization.png" width="49%" alt="Distribution Before Normalization" />
-  <img src="images/maps/after_normalization.png" width="49%" alt="Distribution After Normalization" />
+  <img src="images/maps/after_normalization.png" width="85%" alt="Distribution After Normalization" />
   <br>
-  <em>Figure: Cleaned, symmetrical distribution profiles for the processed core variables.</em>
-</p>
-
----
-## 🗺️ Visualizing Transit Equity & Priority
-
-### 1. Spatial Breakdown of Individual Component Vulnerabilities
-The model isolates three primary socioeconomic and demographic signatures across the borough. Mapping these components reveals that vulnerability is not uniform; different neighborhoods face distinct types of structural isolation.
-
-<p align="center">
-  <img src="images/maps/pc_plots.png" width="100%" alt="Principal Components Mapping - Kings County"/>
-  <br>
-  <em>Figure 1: Spatial distribution of Systemic Economic Need (PC1), Physical Mobility Need (PC2), and the Structural Employment Gap (PC3) across Kings County census tracts.</em>
-</p>
-
-### 2. The Final Unified Transit Equity Priority Map
-By combining the meaningful variance of these individual socioeconomic signatures, the model produces a final composite **Transit Equity Priority Index**. This acts as a localized blueprint for resource allocation, separating communities with deep structural barriers from high-resource zones.
-
-<p align="center">
-  <img src="images/maps/transit_equity_index.png" width="75%" alt="Transit Equity Priority Index by Census Tract"/>
-  <br>
-  <em>Figure 2: Final integrated Transit Equity Priority Index by Census Tract in Kings County, highlighting high-priority investment zones.</em>
+  <em>Figure 3: Variable distributions following transformation and standardization.</em>
 </p>
 
 ---
 
-## 🔍 Data-Driven Planning Implications
+## 🔍 Principal Component Analysis Results
 
-The model processes six highly correlated variables. Through dimensionality reduction, the first four components capture **88.5% of the total variance** across the region. The mathematical weights (loadings) define exactly what type of disadvantage a tract faces:
+Principal Component Analysis was performed on the standardized dataset to identify latent patterns of vulnerability across census tracts.
 
-| Socioeconomic Feature | PC1: Systemic Vulnerability (36.29%) | PC2: Age & Physical Mobility (25.35%) | PC3: Structural Employment Gap (14.49%) | PC4: Infrastructure Disconnect (12.37%) |
-| :--- | :---: | :---: | :---: | :---: |
-| **Households Below Poverty Line** | **0.579** | -0.111 | -0.166 | 0.017 |
-| **Area with No Internet Usage** | **0.449** | 0.123 | **-0.651** | **0.384** |
-| **Zero Car Ownership** | **0.411** | **-0.453** | 0.066 | **-0.557** |
-| **Disability Status** | 0.383 | **0.461** | 0.251 | **-0.444** |
-| **Unemployment Status** | 0.371 | -0.145 | **0.686** | **0.587** |
-| **Population Over 65** | 0.099 | **0.731** | 0.103 | -0.011 |
+The first four principal components explain approximately **88.5% of total variance**, indicating that they capture most of the variation present in the original six indicators.
 
-### 💡 Core Planning Takeaways by Component
+| Socioeconomic Feature         |  PC1  |   PC2  |   PC3  |   PC4  |
+| :---------------------------- | :---: | :----: | :----: | :----: |
+| Households Below Poverty Line | 0.579 | -0.111 | -0.166 |  0.017 |
+| No Internet Access            | 0.449 |  0.123 | -0.651 |  0.384 |
+| Zero Vehicle Ownership        | 0.411 | -0.453 |  0.066 | -0.557 |
+| Disability Status             | 0.383 |  0.461 |  0.251 | -0.444 |
+| Unemployment Status           | 0.371 | -0.145 |  0.686 |  0.587 |
+| Population Over 65            | 0.099 |  0.731 |  0.103 | -0.011 |
 
-#### **PC1: Systemic Socioeconomic Vulnerability (36.29% Variance Explained)**
-* **The Signature:** Heavily driven by deep Poverty (0.579), Digital Exclusion (0.449), and Zero Car Ownership (0.411).
-* **Strategic Implication:** This is the core equity indicator. It highlights areas facing overlapping layers of economic and logistical disadvantage. In a transit context, these populations represent **high-dependence transit riders**. They do not choose public transit based on convenience; they rely on it entirely for basic survival, daily chores, healthcare, and accessing entry-level employment. 
+### Interpretation of Components
 
-#### **PC2: Age & Physical Mobility Needs (25.35% Variance Explained)**
-* **The Signature:** Strongly dominated by Seniors (0.731) and People with Disabilities (0.461), while shifting cleanly away from Zero Car Ownership (-0.453).
-* **Strategic Implication:** This component isolates physical and demographic vulnerability from purely financial hardship. Because car ownership is negatively loaded here, it points to older, established, or more suburban neighborhoods where seniors might own vehicles but face physical limitations in operating them or accessing standard infrastructure. Planning must pivot here toward **universal design and specialized service**—such as paratransit, low-floor buses, and ADA-compliant stop modifications—rather than high-frequency commuter routes.
+Because PCA components are mathematical constructs, the following interpretations should be viewed as descriptive rather than definitive.
 
-#### **PC3: The Structural Unemployment Gap (14.49% Variance Explained)**
-* **The Signature:** High Unemployment (0.686) contrasted sharply against excellent Internet Connectivity (-0.651).
-* **Strategic Implication:** This component captures a modern urban friction: pockets where digital connectivity is strong, yet unemployment remains high. This signature is typical of younger, dense, or transitioning urban neighborhoods where residents are actively job-hunting, navigating the gig economy, or underemployed. Transit networks in these tracts must adapt to provide robust **off-peak, late-night, and flexible scheduling** to support non-traditional, irregular work hours.
+#### PC1: General Socioeconomic Vulnerability (36.29%)
 
-#### **PC4: Disadvantaged Infrastructure Disconnect (12.37% Variance Explained)**
-* **The Signature:** Co-occurring Unemployment (0.587) and Digital Isolation (0.384), contrasted with active Car Ownership (-0.557) and lower physical disabilities (-0.444).
-* **Strategic Implication:** This component isolates neighborhoods that are digitally and economically left behind but maintain vehicles out of absolute necessity. This signature is typical of working-class, peripheral, or transit-desert communities where possessing a car is a mandatory survival requirement due to a total lack of transit infrastructure. Families in these tracts are forced to take on heavy **vehicle-inherent debt and high fuel burdens** despite low incomes, signaling a critical need for new physical transit lines to alleviate financial stress.
+PC1 is strongly associated with poverty, lack of internet access, and zero-vehicle ownership. This component appears to capture areas where multiple indicators of socioeconomic disadvantage tend to occur together.
+
+#### PC2: Age and Mobility-Related Vulnerability (25.35%)
+
+PC2 is dominated by populations over age 65 and individuals with disabilities. This component may reflect areas where physical accessibility needs are more pronounced.
+
+#### PC3: Employment–Connectivity Contrast (14.49%)
+
+PC3 is characterized by high unemployment alongside relatively strong internet connectivity. This pattern may represent neighborhoods where digital access alone does not translate into improved employment outcomes.
+
+#### PC4: Infrastructure and Access Disparity (12.37%)
+
+PC4 combines unemployment and limited internet access while contrasting with vehicle ownership. This component may capture areas where mobility and connectivity challenges interact in distinct ways.
 
 ---
 
-## 🛠️ Index Synthesis & Mathematical Framework
+## 📊 Component Retention
 
-To establish a mathematically rigorous investment baseline, the final **Transit Equity Priority Score** for each tract is calculated by weighting each independent component by its percentage of explained variance. This ensures that the most prominent structural patterns carry proportional weight in the final index:
+To determine the number of components retained for index construction, a scree plot was examined.
 
-$$\text{Transit Equity Score} = 0.3629(\text{PC}_1) + 0.2535(\text{PC}_2) + 0.1449(\text{PC}_3) + 0.1237(\text{PC}_4)$$
+A clear elbow appears after the fourth principal component, suggesting diminishing returns from additional components. Retaining four components preserves approximately **88.5% of total variance** while maintaining interpretability.
 
 <p align="center">
-  <img src="images/maps/screeplot.png" width="60%" alt="Scree Plot: Explained Variance by Component"/>
+  <img src="images/maps/scree_plot.png" width="60%" alt="Scree Plot: Explained Variance by Component"/>
   <br>
-  <em>Figure 3: Scree plot outlining the mathematical elbow drop-off after PC4, validating the inclusion of 88.5% of overall tract variance.</em>
+  <em>Figure 4: Scree plot used to evaluate component retention.</em>
 </p>
 
 ---
 
-## 🚀 Targeted Policy Interventions
+## 🗺️ Spatial Distribution of Component Scores
 
-Based on the geographic clusters identified in the final index (Figure 2), transportation investments should be deployed using two distinct strategies:
+Component scores were mapped back to census tracts to examine the geographic distribution of vulnerability patterns across Kings County.
 
-1.  **Demand-Responsive Transport (DRT) & Micro-Transit for High-Priority Zones (Deep Red):** Peripheral high-priority clusters (e.g., eastern Brooklyn and southern coastal edges like Coney Island) exhibit intense intersections of economic need and digital/physical isolation. Because these areas often lack dense subway infrastructure, flexible, subsidized micro-transit systems or micro-mobility hubs can bridge the first-and-last-mile gaps efficiently.
-2.  **Targeted Infrastructure & Digital Integration Upgrades:** Deploying ADA-compliant streetscapes, smart bus shelters with real-time arrivals, and localized transit-digital kiosks directly mitigates the specific physical and digital barriers isolated by the underlying model components, ensuring technology and infrastructure serve those who depend on them most.
+<p align="center">
+  <img src="images/maps/pca_spatial_plots.jpg" width="100%" alt="Principal Components Mapping - Kings County"/>
+  <br>
+  <em>Figure 5: Spatial distribution of the principal component scores across Kings County census tracts.</em>
+</p>
+
+---
+
+## 🛠️ Construction of the Transit Equity Priority Index
+
+The final index was generated by combining the retained principal components using weights proportional to their explained variance.
+
+[
+\text{TEPI} =
+0.3629(PC_1) +
+0.2535(PC_2) +
+0.1449(PC_3) +
+0.1237(PC_4)
+]
+
+This weighting scheme provides a statistically grounded baseline by emphasizing components that explain a larger share of overall variation. Alternative weighting approaches could be explored in future work.
+
+---
+
+## 🎯 Transit Equity Priority Map
+
+The resulting Transit Equity Priority Index highlights census tracts where multiple vulnerability indicators are concentrated.
+
+The map is intended as an exploratory planning tool rather than a prescriptive decision-making framework. Areas with elevated scores may warrant additional investigation using transportation network, accessibility, and service-level data.
+
+<p align="center">
+  <img src="images/maps/final_transit_equity_map.jpg" width="75%" alt="Transit Equity Priority Index by Census Tract"/>
+  <br>
+  <em>Figure 6: Final Transit Equity Priority Index across Kings County census tracts.</em>
+</p>
+
+---
+
+## 🚀 Potential Transportation Planning Applications
+
+The index may support transportation planners by helping identify locations for more detailed accessibility analysis and targeted intervention strategies, including:
+
+### Demand-Responsive Transit and Microtransit
+
+Areas exhibiting high concentrations of vulnerability may benefit from flexible mobility services that improve first-mile and last-mile connectivity.
+
+### Accessibility-Focused Infrastructure Improvements
+
+Neighborhoods with elevated age- and disability-related vulnerability scores may warrant further evaluation for ADA-compliant infrastructure, pedestrian accessibility improvements, and enhanced transit amenities.
+
+### Future Extensions
+
+Potential future enhancements include:
+
+* Integration of GTFS transit service data
+* Accessibility and travel-time analysis
+* Network-based equity metrics
+* Spatial clustering techniques
+* Machine learning approaches for vulnerability prediction
+* Temporal analysis using multi-year ACS datasets
+
+---
+
+## 🔧 Technologies Used
+
+* Python
+* Pandas
+* NumPy
+* Scikit-Learn
+* GeoPandas
+* Matplotlib
+* Census API
+* Principal Component Analysis (PCA)
+
+---
+
+## 📚 Disclaimer
+
+This project is intended as an educational and exploratory analysis. The resulting index reflects statistical relationships within the selected variables and should not be interpreted as a direct measure of transportation need without complementary transportation system and accessibility data.

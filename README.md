@@ -104,7 +104,7 @@ To determine the number of components retained for index construction, a scree p
 A clear elbow appears after the fourth principal component, suggesting diminishing returns from additional components. Retaining four components preserves approximately **88.5% of total variance** while maintaining interpretability.
 
 <p align="center">
-  <img src="images/maps/scree_plot.png" width="60%" alt="Scree Plot: Explained Variance by Component"/>
+  <img src="images/maps/screeplot.png" width="60%" alt="Scree Plot: Explained Variance by Component"/>
   <br>
   <em>Figure 4: Scree plot used to evaluate component retention.</em>
 </p>
@@ -116,7 +116,7 @@ A clear elbow appears after the fourth principal component, suggesting diminishi
 Component scores were mapped back to census tracts to examine the geographic distribution of vulnerability patterns across Kings County.
 
 <p align="center">
-  <img src="images/maps/pca_spatial_plots.jpg" width="100%" alt="Principal Components Mapping - Kings County"/>
+  <img src="images/maps/pc_plots.jpg" width="100%" alt="Principal Components Mapping - Kings County"/>
   <br>
   <em>Figure 5: Spatial distribution of the principal component scores across Kings County census tracts.</em>
 </p>
@@ -146,7 +146,7 @@ The resulting Transit Equity Priority Index highlights census tracts where multi
 The map is intended as an exploratory planning tool rather than a prescriptive decision-making framework. Areas with elevated scores may warrant additional investigation using transportation network, accessibility, and service-level data.
 
 <p align="center">
-  <img src="images/maps/final_transit_equity_map.jpg" width="75%" alt="Transit Equity Priority Index by Census Tract"/>
+  <img src="images/maps/transit_equity_index.jpg" width="75%" alt="Transit Equity Priority Index by Census Tract"/>
   <br>
   <em>Figure 6: Final Transit Equity Priority Index across Kings County census tracts.</em>
 </p>

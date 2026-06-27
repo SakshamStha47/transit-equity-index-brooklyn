@@ -129,7 +129,6 @@ Component scores were mapped back to census tracts to examine the geographic dis
 
 The final index is computed as a weighted combination of the four retained principal components:
 
-```text
 TEPI = (0.3629 × PC1)
      + (0.2535 × PC2)
      + (0.1449 × PC3)

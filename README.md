@@ -1,202 +1,278 @@
-# Transit Equity Priority Index (TEPI): Identifying Spatial Vulnerability Patterns in Kings County Using Principal Component Analysis
+# Transit Need, Accessibility, and Microtransit Analysis in Brooklyn, New York
 
-A spatial analytics project that integrates socioeconomic, demographic, and digital-access indicators into a composite vulnerability index for census tracts in Kings County (Brooklyn), New York. The objective is to explore how multiple dimensions of disadvantage co-occur spatially and to provide a data-driven framework that may support equity-focused transportation planning.
+A transportation accessibility research project investigating why some high-transit-need neighborhoods experience lower access to employment opportunities and whether microtransit can improve first-mile connectivity to rapid transit.
+
+This project integrates demographic vulnerability analysis, public transit accessibility modeling, statistical inference, and microtransit simulation into a unified analytical framework.
 
 ---
 
 ## 📌 Project Overview
 
-Transportation accessibility is shaped by more than infrastructure alone. Economic hardship, age, disability status, vehicle availability, and digital connectivity can collectively influence an individual's ability to access employment, healthcare, education, and essential services.
+Transportation disadvantage is not solely a function of transit infrastructure. Communities with higher levels of poverty, unemployment, disability, aging populations, and limited vehicle access often depend more heavily on public transportation to access jobs and essential services.
 
-This project develops a **Transit Equity Priority Index (TEPI)** by combining six census-derived indicators of potential transportation disadvantage. Rather than assigning subjective weights to these variables, the analysis applies **Principal Component Analysis (PCA)** to identify latent patterns within the data and reduce dimensionality while retaining most of the underlying variance.
+This project seeks to answer three fundamental questions:
 
-The resulting index highlights census tracts where multiple vulnerability factors are concentrated and may warrant further investigation for transportation equity interventions.
+1. **Which neighborhoods exhibit high transit need and low job accessibility?**
+2. **Why do some high-need neighborhoods perform better than others?**
+3. **Can microtransit improve accessibility for disadvantaged communities?**
 
----
-
-## 📊 Data Source & Preprocessing Pipeline
-
-The analysis uses census-tract-level data obtained from the **American Community Survey (ACS)** for Kings County, NY.
-
-The following indicators were extracted and aggregated:
-
-1. **Zero-Vehicle Ownership** (ACS Table B25044)
-2. **Poverty Status** (ACS Table B17017)
-3. **Unemployment Rate** (ACS Table B23025)
-4. **Population Over Age 65** (ACS Table B01001)
-5. **Population with a Disability** (ACS Table B18101)
-6. **Households Without Internet Access** (ACS Table B28011)
-
-### Spatial Outlier Masking
-
-Census tracts containing fewer than 100 households were excluded from analysis to reduce the influence of industrial areas, parks, transportation facilities, and other sparsely populated zones that may distort statistical distributions.
-
-<p align="center">
-  <img src="images/maps/reference_google_map.png" width="48%" alt="Brooklyn Reference Map" />
-  <img src="images/maps/initial_data_cleanup.png" width="48%" alt="Filtered Census Tracts" />
-  <br>
-  <em>Figure 1: Census tract filtering process used to remove sparsely populated outliers.</em>
-</p>
-
-### Distribution Transformation
-
-Several variables exhibited right-skewed distributions. Logarithmic and square-root transformations were applied where appropriate to reduce skewness and improve compatibility with PCA assumptions.
-
-<p align="center">
-  <img src="images/maps/tranformation.png" width="95%" alt="Poverty Data Log Transformation Pipeline" />
-  <br>
-  <em>Figure 2: Example of distribution adjustment using logarithmic transformation.</em>
-</p>
-
-### Standardization
-
-All variables were standardized using z-score normalization to ensure that differences in measurement scale did not disproportionately influence the PCA results.
-
-<p align="center">
-  <img src="images/maps/before_normalization.png" width="48%" alt="Distribution Before Normalization" />
-  <img src="images/maps/after_normalization.png" width="48%" alt="Distribution After Normalization" />
-  <br>
-  <em>Figure 3: Variable distributions following transformation and standardization.</em>
-</p>
----
-
-## 🔍 Principal Component Analysis Results
-
-Principal Component Analysis was performed on the standardized dataset to identify latent patterns of vulnerability across census tracts.
-
-The first four principal components explain approximately **88.5% of total variance**, indicating that they capture most of the variation present in the original six indicators.
-
-| Socioeconomic Feature         |  PC1  |   PC2  |   PC3  |   PC4  |
-| :---------------------------- | :---: | :----: | :----: | :----: |
-| Households Below Poverty Line | 0.579 | -0.111 | -0.166 |  0.017 |
-| No Internet Access            | 0.449 |  0.123 | -0.651 |  0.384 |
-| Zero Vehicle Ownership        | 0.411 | -0.453 |  0.066 | -0.557 |
-| Disability Status             | 0.383 |  0.461 |  0.251 | -0.444 |
-| Unemployment Status           | 0.371 | -0.145 |  0.686 |  0.587 |
-| Population Over 65            | 0.099 |  0.731 |  0.103 | -0.011 |
-
-### Interpretation of Components
-
-Because PCA components are mathematical constructs, the following interpretations should be viewed as descriptive rather than definitive.
-
-#### PC1: General Socioeconomic Vulnerability (36.29%)
-
-PC1 is strongly associated with poverty, lack of internet access, and zero-vehicle ownership. This component appears to capture areas where multiple indicators of socioeconomic disadvantage tend to occur together.
-
-#### PC2: Age and Mobility-Related Vulnerability (25.35%)
-
-PC2 is dominated by populations over age 65 and individuals with disabilities. This component may reflect areas where physical accessibility needs are more pronounced.
-
-#### PC3: Employment–Connectivity Contrast (14.49%)
-
-PC3 is characterized by high unemployment alongside relatively strong internet connectivity. This pattern may represent neighborhoods where digital access alone does not translate into improved employment outcomes.
-
-#### PC4: Infrastructure and Access Disparity (12.37%)
-
-PC4 combines unemployment and limited internet access while contrasting with vehicle ownership. This component may capture areas where mobility and connectivity challenges interact in distinct ways.
+Using census data, GTFS transit schedules, OpenStreetMap networks, and travel-time accessibility modeling, the project develops a framework for identifying transit-need neighborhoods, diagnosing accessibility disparities, and evaluating potential interventions.
 
 ---
 
-## 📊 Component Retention
+# 🔬 Research Framework
 
-To determine the number of components retained for index construction, a scree plot was examined.
-
-A clear elbow appears after the fourth principal component, suggesting diminishing returns from additional components. Retaining four components preserves approximately **88.5% of total variance** while maintaining interpretability.
+The analysis is conducted in three stages.
 
 <p align="center">
-  <img src="images/maps/screeplot.png" width="60%" alt="Scree Plot: Explained Variance by Component"/>
-  <br>
-  <em>Figure 4: Scree plot used to evaluate component retention.</em>
+  <img src="figures/research_framework.png" width="85%" alt="Research Framework"/>
 </p>
 
 ---
 
-## 🗺️ Spatial Distribution of Component Scores
+## Stage 1: Transit Need and Accessibility Assessment
 
-Component scores were mapped back to census tracts to examine the geographic distribution of vulnerability patterns across Kings County.
+### Transit Need Priority Index (TNPI)
 
-<p align="center">
-  <img src="images/maps/pc_plots.png" width="100%" alt="Principal Components Mapping - Kings County"/>
-  <br>
-  <em>Figure 5: Spatial distribution of the principal component scores across Kings County census tracts.</em>
-</p>
+A Transit Need Priority Index (TNPI) was developed to identify neighborhoods where residents are likely to be more dependent on public transportation.
 
----
+The index incorporates six census-derived indicators:
 
-## 🛠️ Construction of the Transit Equity Priority Index
+- Households below the poverty line
+- Unemployment
+- Zero-vehicle ownership
+- Population over age 65
+- Population with disabilities
+- Households without internet access
 
-### Transit Equity Priority Index (TEPI)
+Rather than assigning subjective weights, **Principal Component Analysis (PCA)** was used to identify latent vulnerability patterns and derive statistically grounded component weights.
 
-<p align="center">
-  <span style="font-family: 'Times New Roman', serif; font-size: 24px;">
-    TEPI = 0.3629·PC₁ + 0.2535·PC₂ + 0.1449·PC₃ + 0.1237·PC₄
-  </span>
-</p>
+### Accessibility Analysis
 
+Transit accessibility was measured as:
 
-This weighting scheme provides a statistically grounded baseline by emphasizing components that explain a larger share of overall variation. Alternative weighting approaches could be explored in future work.
+> Total jobs reachable within 45 minutes using public transit and walking during the morning peak period.
 
----
+Travel times were calculated using:
 
-## 🎯 Transit Equity Priority Map
+- GTFS transit schedules
+- OpenStreetMap street networks
+- R5 routing engine via `r5py`
 
-The resulting Transit Equity Priority Index highlights census tracts where multiple vulnerability indicators are concentrated.
+Neighborhoods were classified into four categories:
 
-The map is intended as an exploratory planning tool rather than a prescriptive decision-making framework. Areas with elevated scores may warrant additional investigation using transportation network, accessibility, and service-level data.
+| Transit Need | Accessibility | Category |
+|-------------|--------------|----------|
+| High | High | High Need – High Access |
+| High | Low | High Need – Low Access |
+| Low | High | Low Need – High Access |
+| Low | Low | Low Need – Low Access |
 
-<p align="center">
-  <img src="images/maps/transit_equity_index.png" width="75%" alt="Transit Equity Priority Index by Census Tract"/>
-  <br>
-  <em>Figure 6: Final Transit Equity Priority Index across Kings County census tracts.</em>
-</p>
-
----
-
-
-## 🔧 Technologies Used
-
-* Python
-* Pandas
-* NumPy
-* Scikit-Learn
-* GeoPandas
-* Matplotlib
-* Census API
-* Principal Component Analysis (PCA)
-
----
-## 🔎 Spatial Patterns & Planning Implications
-
-The Transit Equity Priority Index reveals several notable spatial patterns across Kings County.
-
-First, elevated TEPI scores are not randomly distributed throughout the borough. Instead, high-priority census tracts appear in geographically concentrated clusters, suggesting that socioeconomic vulnerability exhibits meaningful spatial structure. This clustering indicates that transportation disadvantage may be experienced collectively at the neighborhood level rather than solely at the individual household level.
-
-Second, several concentrations of high-priority tracts emerge in southern and eastern portions of the borough. These areas exhibit overlapping combinations of poverty, unemployment, disability, limited digital connectivity, and transportation dependence. The co-occurrence of multiple vulnerability indicators suggests that residents in these communities may be particularly sensitive to transportation barriers and accessibility constraints.
-
-In contrast, lower-priority tracts are concentrated in several northwestern sections of the borough, indicating substantial intra-urban variation in vulnerability across Kings County. This highlights the importance of geographically targeted planning approaches rather than uniform borough-wide interventions.
-
-The presence of several isolated high-scoring tracts surrounded by lower-scoring neighbors may also warrant additional investigation. Such patterns could reflect localized concentrations of disadvantage, unique land-use characteristics, public housing developments, or tract-level demographic anomalies that are not immediately visible from aggregate statistics alone.
-
-Overall, the spatial distribution suggests that transportation equity challenges are not evenly distributed throughout Kings County and may require a combination of localized and network-wide planning responses.
+This classification provides a foundation for identifying neighborhoods experiencing both high transportation need and poor access to employment opportunities.
 
 ---
 
-## ⚠️ Interpretation & Limitations
+## Stage 2: Understanding Accessibility Disparities
 
-It is important to recognize that the Transit Equity Priority Index measures **social vulnerability**, not transportation accessibility itself.
+Identifying low-access neighborhoods is only the first step.
 
-The index is constructed from socioeconomic and demographic indicators including poverty, unemployment, disability status, age, internet access, and vehicle ownership. While these variables are frequently associated with transportation disadvantage, they do not directly measure transportation service quality.
+The second stage investigates:
 
-As a result, a census tract may receive a high TEPI score because it contains populations that are particularly vulnerable to mobility barriers, even if transit service in that area is relatively strong. Conversely, areas with limited transit service may receive lower scores if residents experience fewer socioeconomic disadvantages.
+> Why do some high-transit-need neighborhoods achieve strong accessibility while others do not?
 
-Therefore, the index should be interpreted as identifying communities that may be more sensitive to transportation barriers rather than definitively identifying underserved transit areas.
+Several built-environment and transportation variables were examined:
 
-Future work could strengthen the analysis by incorporating transportation-specific datasets such as:
+- Distance to nearest subway station
+- Distance to nearest bus stop
+- Subway station density
+- Bus stop density
+- Distance to Manhattan CBD
 
-* GTFS transit service data
-* Travel-time accessibility measures
-* Transit frequency and reliability metrics
-* Walkability and first/last-mile connectivity indicators
-* Employment accessibility analyses
+The following analytical techniques were employed:
 
-Integrating these datasets would allow future versions of the index to evaluate whether socially vulnerable populations also experience disproportionate transportation accessibility challenges.
+### Statistical Testing
+
+- Mann–Whitney U Tests
+
+### Predictive Modeling
+
+- Logistic Regression
+- Random Forest Classification
+
+### Variable Importance Assessment
+
+- Permutation Importance Analysis
+
+The objective is to identify which factors most strongly differentiate high-access and low-access transit-need neighborhoods.
+
+---
+
+## Stage 3: Microtransit Intervention Analysis
+
+Findings from Stage 2 suggest that first-mile access to subway stations may play a critical role in determining accessibility outcomes.
+
+To evaluate a potential intervention, a microtransit service was simulated.
+
+The service is conceptualized as an on-demand first-mile connection between residential areas and nearby subway stations.
+
+### Intervention Objectives
+
+- Improve access to rapid transit
+- Increase employment accessibility
+- Reduce accessibility disparities among high-need neighborhoods
+
+### Sensitivity Analysis
+
+Because real-world microtransit services involve operational delays, accessibility outcomes were tested under varying assumptions regarding:
+
+- Dispatch delays
+- Passenger waiting times
+- Service buffering
+
+This analysis helps identify operational conditions under which microtransit remains effective.
+
+---
+
+# 📊 Key Findings
+
+### 1. Transit Need and Accessibility Are Negatively Associated
+
+Neighborhoods with higher transit need generally exhibit lower job accessibility.
+
+### 2. Accessibility Differences Are Not Uniform
+
+Not all high-need neighborhoods perform equally.
+
+Some maintain strong accessibility despite elevated transit need.
+
+### 3. Subway Access Appears Critical
+
+Accessibility differences among high-need neighborhoods are strongly associated with proximity to subway stations.
+
+### 4. Microtransit Shows Promise as a First-Mile Solution
+
+Simulated microtransit interventions produce substantial accessibility gains for selected neighborhoods.
+
+### 5. Operational Delays Matter
+
+Accessibility improvements decline as dispatch and waiting delays increase, highlighting the importance of service design.
+
+---
+
+# 🗂 Repository Structure
+
+```text
+brooklyn-transit-need-microtransit/
+│
+├── notebooks/
+│   ├── 01_transit_need_accessibility_analysis.ipynb
+│   ├── 02_accessibility_determinants_analysis.ipynb
+│   └── 03_microtransit_sensitivity_analysis.ipynb
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── figures/
+│
+├── outputs/
+│
+├── README.md
+│
+└── requirements.txt
+```
+
+---
+
+# 📁 Data Sources
+
+### Demographic and Socioeconomic Data
+
+- American Community Survey (ACS) 5-Year Estimates
+- U.S. Census Bureau
+
+### Employment Data
+
+- Longitudinal Employer-Household Dynamics (LEHD)
+- LODES Workplace Area Characteristics (WAC)
+
+### Transit Data
+
+- MTA Subway GTFS
+- MTA Bus GTFS
+
+### Network Data
+
+- OpenStreetMap
+
+---
+
+# 🛠 Technologies Used
+
+### Python
+
+- Pandas
+- NumPy
+- GeoPandas
+- Scikit-Learn
+- SciPy
+- Matplotlib
+- Seaborn
+- OSMnx
+- NetworkX
+- r5py
+
+### Accessibility Routing
+
+- R5 Routing Engine
+- GTFS Transit Schedules
+- OpenStreetMap Networks
+
+---
+
+# ⚠️ Limitations
+
+Several limitations should be considered when interpreting the results.
+
+- The Transit Need Priority Index measures transportation-related vulnerability rather than transportation service quality.
+- Accessibility is evaluated using a 45-minute cumulative-opportunities measure and may vary under alternative thresholds.
+- Microtransit scenarios represent modeled interventions rather than observed services.
+- Operational assumptions regarding dispatch delays and routing efficiency influence simulated outcomes.
+
+Future work may incorporate:
+
+- Additional cities and metropolitan regions
+- Alternative accessibility metrics
+- Service reliability measures
+- Cost-effectiveness analysis
+- Observed microtransit operating data
+
+---
+
+# 🚀 Future Directions
+
+This project is part of an ongoing effort to understand the relationship between transportation need, accessibility, and mobility interventions.
+
+Potential future extensions include:
+
+- Cross-city comparative studies
+- Accessibility equity benchmarking
+- Demand-responsive transit optimization
+- First-mile/last-mile accessibility planning
+- Transportation resilience analysis
+
+---
+
+# 👤 Author
+
+**Saksham Shrestha**
+
+Independent Transportation Researcher
+
+Kathmandu, Nepal
+
+---
+
+## Citation
+
+If you use this repository, please cite the associated research project and provide attribution to the author.
